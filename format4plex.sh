@@ -34,7 +34,10 @@ seed_mock_files() {
         "ALF-S02E12-ALF's Special Christmas.avi",
         'ALF-S02E18-We Gotta Get Out of This Place.avi'
     )
-    printf "mock files: ${mockFiles}"
+    for file in ${mockFiles[@]}
+    do
+        printf "%s\n" ${file}
+    done
 }
 
 # verifies if the target is a file or a directory
@@ -45,7 +48,7 @@ what_type() {
 # ls $1 | process_list
 
 # PROGRAM EXECUTE HERE
-# execute command targets
+# execute command with targets (arguments)
 if [ $# -gt 0 ]
 then
     for var in "$@"

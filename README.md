@@ -5,6 +5,7 @@ This bash script formats the file names in a targeted directory to match the Ple
 ## Install
 
 1. Clone repository
+1. Change permission to make the file executable
 1. Create a symbolic link to `format4plex.sh` in any of your `bin` directories
 
 
@@ -17,6 +18,7 @@ Execute `echo $PATH` to see what paths are already in your `PATH` environment va
 - ~/local/bin
 
 ```bash
+chmod u+x format4plex.sh
 sudo ln -s /path/to/plex-formatting/format4plex.sh /usr/local/bin/format4plex
 ```
 
