@@ -4,28 +4,45 @@
 # The purpose of this script is to read a directory and rename the files to
 # match a format that fits with Plex Media Server's standards.
 
+# The MVP of this script will just rename file names to be lowercase and replace
+# spaces with hypens. I'll worry myself with more advanced stuff later.
+
 # root parameter(s) to the script
 # $1 - directory
 
 lines_read=0
 files_processed=0
 
-# uses the data from a previous command and processes it
+# remove temporarily files and directory
+clean_mock_files() {
+    rm -rf tmp
+}
+
+# uses the data from a previous command and processes the output
 process_list() {
+    IFS=""
     while read -r line
     do
         (( lines_read += 1 ))
-        printf '%s\n' "$line"
-        
-        # what_type "$line"
+        lowercase="$(echo ${line} | tr '[:upper:]' '[:lower:]')"
+        lowercase="$(echo ${lowercase} | tr '[:space:]' '-')"
+        printf '%s\n' ${lowercase}
+        expr index $lowercase ,
+        # mv ${line} ${lowercase}
     done
 
     echo
-    printf "Lines read: %s\n" $lines_read
+    printf "Lines read: %s\n" ${lines_read}
 }
 
 # seed a temporary directory with mock files in order to test this script
 seed_mock_files() {
+    # create tmp directory
+    if [ ! -d "./tmp" ]
+    then
+        mkdir -p tmp
+    fi
+
     mockFiles=(
         'ALF-S02E01-Working My Way Back to You.mp4',
         'ALF-S02E02-Somewhere Over the Rerun (aka The Ballad of Gilligan'\''s Island).avi',
@@ -34,32 +51,30 @@ seed_mock_files() {
         "ALF-S02E12-ALF's Special Christmas.avi",
         'ALF-S02E18-We Gotta Get Out of This Place.avi'
     )
+    IFS=""
     for file in ${mockFiles[@]}
     do
-        printf "%s\n" ${file}
+        # printf "%s\n" ${file}
+        touch tmp/${file}
     done
 }
 
-# verifies if the target is a file or a directory
-what_type() {
-    printf '%s\n' "is a file: ${1}"
-}
-
-# ls $1 | process_list
-
-# PROGRAM EXECUTE HERE
+# PROGRAM EXECUTES HERE
 # execute command with targets (arguments)
 if [ $# -gt 0 ]
 then
+    echo # make a space for any upcoming output
     for var in "$@"
     do
         case "$@" in
+            clean)
+                clean_mock_files
+                ;;
             seed)
                 seed_mock_files
                 ;;
             *)
-                # ls $var | process_list
-                echo "executed default case"
+                ls $var | process_list
         esac
     done
 else
