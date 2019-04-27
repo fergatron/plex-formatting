@@ -14,6 +14,7 @@ Execute `echo $PATH` to see what paths are already in your `PATH` environment va
 - /usr/local/bin
 - /usr/local/sbin
 - /usr/bin
+- /usr/sbin
 - ~/bin
 - ~/local/bin
 
@@ -21,6 +22,8 @@ Execute `echo $PATH` to see what paths are already in your `PATH` environment va
 chmod u+x format4plex.sh
 sudo ln -s /path/to/plex-formatting/format4plex.sh /usr/local/bin/format4plex
 ```
+
+> Note: If you need to use the `sudo` command with the script then place the symbolic link inside `/usr/sbin` directory.
 
 ## References
 
