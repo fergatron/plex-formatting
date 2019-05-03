@@ -7,32 +7,28 @@
 # The MVP of this script will just rename file names to be lowercase and replace
 # spaces with hypens. I'll worry myself with more advanced stuff later.
 
-# TODO
-# 1. Figure out how to convert '1x01' to 's01e01'
-# 2. Remove certain patterns (use external file as a database) - have user input pattern to remove
-# if it only removes formatting then don't go through the entire process of filtering and renaming
-# ie: --pattern-to-remove DVDrip.Xvid.mp3
-
 # root parameter(s) to the script
 # $1 - directory or OPTIONS
 # $2 - OPTIONS
 
-# global variables
-declare -i lines_read=0
-declare -i files_processed=0
+# fail immediately if any errors occur
+set -e
 
-# remove temporarily files and directory
-clean_mock_files() {
-    rm -rf tmp
-    printf "Successfully removed the tmp directory.\n"
-}
+MY_DIR="$(dirname "$0")"
+
+# import helper scripts
+source ${MY_DIR}/common/mock.sh
+
+# global variables
+lines_read=0
+files_processed=0
 
 # display final results and some stats
-display_results() {
+function display_results() {
     echo
     printf "Lines read: %s\n" ${lines_read}
 
-    if [ files_processed -gt 0 ]
+    if [ ${files_processed} -gt 0 ]
     then
         printf "Directory list:\n"
         ls
@@ -42,7 +38,7 @@ display_results() {
 }
 
 # uses the data from a previous command and processes the output
-process_list() {
+function process_list() {
     IFS=""
     while read -r line
     do
@@ -62,39 +58,14 @@ process_list() {
         # actually processing the file based on filters
         # $(mv ${line} ${lowercase})
         # $(echo $lowercase)
-        if [ $(mv ${line} ${lowercase}) ]; then
+        if [ $(echo $lowercase) ]; then
             files_processed=$(( $files_processed + 1 ))
         fi
     done
     printf "lines read (%s) processed (%s)." ${lines_read} ${files_processed}
-}
-
-# seed a temporary directory with mock files in order to test this script
-seed_mock_files() {
-    # create tmp directory
-    if [ ! -d "./tmp" ]
-    then
-        mkdir -p tmp
-        printf "Successfully created tmp directory.\n"
-    fi
-
-    mockFiles=(
-        'ALF-S02E01-Working My Way Back to You.mp4'
-        'ALF-S02E02-Somewhere Over the Rerun (aka The Ballad of Gilligan'\''s Island).avi'
-        'ALF-S02E03-Take, a Look at Me Now.avi'
-        "ALF-S02E12-ALF's Special Christmas.avi"
-        'Full House 1x00 - Pilot Unaired Pilot(Dvdrip)(Dark_Stalker).avi'
-        'Full House 1x02 - Our Very First Night(Dvdrip)(Dark_Stalker).avi'
-        'Darkwing Duck - 122 - Double Darkwings.avi'
-        'Darkwing Duck - 123 - Aduckyphobia.avi'
-    )
-    IFS=""
-    for file in ${mockFiles[@]}
-    do
-        # printf "%s\n" ${file}
-        touch tmp/${file}
-    done
-    printf "Successfully created temporary files.\n"
+    
+    export files_processed=$files_processed
+    export lines_read=$lines_read
 }
 
 # PROGRAM EXECUTES HERE
