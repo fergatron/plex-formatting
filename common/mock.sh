@@ -20,6 +20,7 @@ function seed_mock_files() {
         'ALF-S02E02-Somewhere Over the Rerun (aka The Ballad of Gilligan'\''s Island).avi'
         'ALF-S02E03-Take, a Look at Me Now.avi'
         "ALF-S02E12-ALF's Special Christmas.avi"
+        '02 Plunder & Lighting p3.mkv'
         'Full House 1x00 - Pilot Unaired Pilot(Dvdrip)(Dark_Stalker).avi'
         'Full House 1x02 - Our Very First Night(Dvdrip)(Dark_Stalker).avi'
         'Darkwing Duck - 122 - Double Darkwings.avi'
