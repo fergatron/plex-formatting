@@ -14,7 +14,7 @@
 # fail immediately if any errors occur
 set -e
 
-MY_DIR="$(dirname "$0")"
+MY_DIR="$(dirname "$(readlink -f "$0")")"
 
 # import helper scripts
 source ${MY_DIR}/common/data.sh
